@@ -1,4 +1,4 @@
-from smolagents import CodeAgent, InferenceClientModel, load_tool
+from smolagents import CodeAgent, load_tool
 import yaml
 from tools.final_answer import FinalAnswerTool
 from tools.data_tools import (
@@ -9,19 +9,20 @@ from tools.data_tools import (
     get_market_data,
     export_analysis_report
 )
+from ollama_model import OllamaInferenceClient
 
 from Gradio_UI import GradioUI
 
 
 final_answer = FinalAnswerTool()
 
-# Configure local model connection as per deployment guide
-model = InferenceClientModel(
-    max_tokens=512,  # Reduced for local model
+# Configure Ollama model connection
+model = OllamaInferenceClient(
+    model_id="qwen2.5:7b",  # Ollama model name
+    base_url="http://localhost:11434",  # Ollama default port
+    api_key="not-needed",  # Compatibility parameter
+    max_tokens=512,
     temperature=0.7,
-    base_url="http://localhost:8000/v1",  # Point to local server
-    api_key="not-needed",  # Required but not used
-    model_id="Qwen/Qwen2.5-7B-Instruct-AWQ",
     custom_role_conversions=None,
 )
 

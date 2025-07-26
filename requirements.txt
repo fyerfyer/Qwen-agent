@@ -1,47 +1,30 @@
-# ResearchBot Pro Requirements
+# DataSphere Navigator Requirements - Ollama Optimized
 # Optimized for Ubuntu 20.04.6 LTS, Python 3.10.11, CUDA 12.4, Tesla T4
-# Note: PyTorch 2.5.1+cu124 is already installed globally on the system
+# Using Ollama for LLM deployment - No heavy ML libraries required
 
-# Core ML and AI Libraries (Using existing PyTorch installation)
-# torch==2.5.1+cu124  # SKIP - Using system installation
-# torchvision==0.20.1+cu124  # SKIP - Using system installation  
-# torchaudio==2.5.1+cu124  # SKIP - Using system installation
-# --find-links https://download.pytorch.org/whl/torch_stable.html  # SKIP
-
-# Transformers ecosystem
-transformers==4.46.2
-accelerate==1.1.1
-tokenizers==0.20.3
-safetensors==0.4.5
-
-# vLLM for efficient inference (Tesla T4 optimized)
-# Note: You confirmed vLLM 0.6.3.post1 works with your PyTorch 2.5.1+cu124
-vllm==0.6.3.post1
-
-# Quantization libraries (Tesla T4 compatible)
-# Note: autoawq conflicts with PyTorch 2.5.1+cu124, but vLLM has built-in AWQ support
-bitsandbytes==0.44.1
-auto-gptq==0.7.1
-# autoawq==0.2.6  # SKIP - Requires torch==2.3.1, conflicts with your PyTorch 2.5.1+cu124
+# Core Dependencies (Minimal for Ollama deployment)
+# Note: Ollama handles all model loading and inference - no transformers/torch needed
 
 # Agent framework (using version that works with current Pillow)
 smolagents>=1.0.0
+
+# HTTP clients for Ollama API communication
+requests==2.32.3
+httpx==0.27.2
 
 # UI Framework (updated to work with Pillow 11.0+)
 gradio>=4.45.0  # Newer version compatible with Pillow 11.0+
 fastapi>=0.115.0,<0.116.0
 uvicorn[standard]>=0.32.0,<0.33.0
 
-# Research and web tools
-requests==2.32.3
-beautifulsoup4==4.12.3
-arxiv==2.1.3
+# Data analysis and financial tools
 pandas==2.2.3
 numpy==1.26.4
 scipy==1.14.1
-duckduckgo-search==6.3.2
-markdownify==0.13.1
-lxml==5.3.0
+yfinance==0.2.38  # Financial market data
+openpyxl==3.1.5  # Excel file support
+xlrd==2.0.1      # Excel file reading
+scikit-learn==1.5.2  # Statistical modeling and regression
 
 # Visualization (updated for smolagents compatibility)
 matplotlib>=3.9.2
@@ -55,11 +38,8 @@ python-dotenv==1.0.1
 redis==5.2.0
 hiredis==3.0.0
 
-# Performance monitoring
+# Performance monitoring (lightweight for Ollama)
 psutil==6.1.0
-GPUtil==1.4.0
-nvidia-ml-py==12.560.30
-py3nvml==0.2.7
 
 # Security and encryption
 cryptography==43.0.3
@@ -70,8 +50,7 @@ aiohttp==3.10.10
 asyncio-throttle==1.0.2
 aiofiles==23.2.0  # Compatible with gradio 4.44.1 (requires aiofiles<24.0)
 
-# HTTP and API clients
-httpx==0.27.2
+# Additional HTTP utilities  
 urllib3==2.2.3
 
 # Development and testing
@@ -92,9 +71,8 @@ jsonlines==4.0.0
 orjson==3.10.11
 msgpack==1.1.0
 
-# Hugging Face ecosystem (using compatible versions)
-huggingface-hub>=0.31.2  # Required by smolagents, compatible with transformers
-datasets>=3.1.0
+# Hugging Face ecosystem (minimal - required by smolagents only)
+huggingface-hub>=0.31.2  # Required by smolagents
 
 # Additional utilities for research
 python-dateutil==2.9.0.post0
@@ -109,30 +87,46 @@ cachetools==5.5.0
 # Session management
 itsdangerous==2.2.0
 
-# Cloud Server Optimizations
-# Tesla T4 specific memory and performance optimizations
-optimum>=1.22.0  # Model optimization (removed GPU constraint)
-# onnxruntime-gpu==1.19.2  # SKIP - Large download, not essential for core functionality
+# Alternative Deployment Options (Optional)
+# Uncomment if using alternatives to Ollama:
+# vllm==0.6.0  # High-performance inference (if not using Ollama)
+# transformers==4.46.2  # Only if using custom model deployment  
+# bitsandbytes==0.44.1  # For quantized deployment alternative
 
 # Ubuntu 20.04 compatibility fixes  
 setuptools==75.6.0
 wheel==0.45.0
 pip==24.3.1
 
-# INSTALLATION INSTRUCTIONS (Ubuntu 20.04, PyTorch 2.5.1+cu124):
+# INSTALLATION INSTRUCTIONS - OLLAMA OPTIMIZED
 #
-# Fixed dependency conflicts (Task 2-5):
-# 1. Removed autoawq==0.2.6 (conflicted with PyTorch 2.5.1+cu124)  
-# 2. Fixed aiofiles: 24.1.0 -> 23.2.0 (compatible with gradio)
-# 3. Updated huggingface-hub: 0.26.2 -> >=0.31.2 (required by smolagents)
-# 4. Updated Pillow: 10.4.0 -> >=11.0.0 (required by smolagents>=1.0.0)
-# 5. Updated gradio: 4.44.1 -> >=4.45.0 (compatible with Pillow 11.0+)
+# DataSphere Navigator Dependencies (Ollama Deployment):
+# 1. Core data analysis: pandas, numpy, scipy, scikit-learn
+# 2. Financial data: yfinance for real-time market data
+# 3. File formats: openpyxl, xlrd for Excel support
+# 4. Visualization: matplotlib, plotly, seaborn
+# 5. AI framework: smolagents with Ollama HTTP client
+# 6. HTTP clients: requests, httpx for Ollama API communication
 #
-# RECOMMENDED INSTALLATION:
-# pip install --upgrade pip setuptools wheel
-# pip install -r requirements.txt
-# 
+# KEY OPTIMIZATIONS FOR OLLAMA:
+# 1. Removed transformers, torch, accelerate (handled by Ollama)
+# 2. Removed quantization libraries (AWQ/GPTQ not needed)
+# 3. Removed GPU monitoring tools (Ollama handles GPU management)
+# 4. Kept essential data analysis and visualization tools
+# 5. Added HTTP clients for Ollama API communication
+#
+# DEPLOYMENT SETUP:
+# 1. Install Ollama: curl -fsSL https://ollama.ai/install.sh | sh
+# 2. Pull model: ollama pull qwen2.5:7b
+# 3. Start Ollama: ollama serve
+# 4. Install Python dependencies: pip install -r requirements.txt
+# 5. Start application: python app.py
+#
 # VERIFICATION:
-# python -c "import torch, vllm, gradio, smolagents; print('✅ All packages imported successfully')"
+# python -c "import requests, gradio, smolagents, pandas, yfinance, matplotlib; print('✅ DataSphere Navigator (Ollama) ready')"
 #
-# Note: smolagents>=1.0.0 requires newer versions of Pillow and huggingface-hub
+# MEMORY USAGE COMPARISON:
+# - Original (with transformers): ~15-20GB RAM + 8GB VRAM
+# - Ollama optimized: ~2-4GB RAM + 6-8GB VRAM (handled by Ollama)
+#
+# Note: Ensure Ollama is running at http://localhost:11434 before starting the agent
