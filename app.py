@@ -19,7 +19,7 @@ final_answer = FinalAnswerTool()
 # Configure Ollama model connection
 model = OllamaInferenceClient(
     model_id="qwen2.5:7b",  # Ollama model name
-    base_url="http://localhost:11434",  # Ollama default port
+    base_url="http://localhost:6399",  # Ollama default port
     api_key="not-needed",  # Compatibility parameter
     max_tokens=512,
     temperature=0.7,

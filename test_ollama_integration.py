@@ -65,7 +65,7 @@ def test_inference_client_compatibility():
         # This should work as a drop-in replacement
         model = OllamaInferenceClient(
             model_id="qwen2.5:7b",
-            base_url="http://localhost:11434",
+            base_url="http://localhost:6399",
             api_key="not-needed",
             max_tokens=100,
             temperature=0.7,

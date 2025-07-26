@@ -36,8 +36,8 @@ else
     
     # Check if Ollama is responding
     for i in {1..10}; do
-        if curl -s http://localhost:11434/api/tags > /dev/null; then
-            echo "✅ Ollama is responding on port 11434"
+        if curl -s http://localhost:6399/api/tags > /dev/null; then
+            echo "✅ Ollama is responding on port 6399"
             break
         else
             echo "⏳ Waiting for Ollama to respond... ($i/10)"
@@ -85,7 +85,7 @@ ollama list
 echo ""
 echo "🎉 Ollama setup complete!"
 echo ""
-echo "🔗 Ollama API URL: http://localhost:11434"
+echo "🔗 Ollama API URL: http://localhost:6399"
 echo "🤖 Active model: qwen2.5:7b"
 echo ""
 echo "🚀 Next steps:"
@@ -97,4 +97,4 @@ echo "💡 Useful Ollama commands:"
 echo "   - List models: ollama list"
 echo "   - Chat with model: ollama run qwen2.5:7b"
 echo "   - Stop Ollama: pkill ollama"
-echo "   - Check status: curl http://localhost:11434/api/tags"
+echo "   - Check status: curl http://localhost:6399/api/tags"

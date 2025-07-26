@@ -23,7 +23,7 @@ class OllamaModel:
     def __init__(
         self,
         model_name: str = "qwen2.5:7b",
-        base_url: str = "http://localhost:11434",
+        base_url: str = "http://localhost:6399",
         max_tokens: int = 512,
         temperature: float = 0.7,
         top_p: float = 0.9,
@@ -35,7 +35,7 @@ class OllamaModel:
         
         Args:
             model_name: Name of the Ollama model to use
-            base_url: Base URL for Ollama API (default: http://localhost:11434)
+            base_url: Base URL for Ollama API (default: http://localhost:6399)
             max_tokens: Maximum tokens to generate
             temperature: Sampling temperature
             top_p: Top-p sampling parameter
@@ -278,7 +278,7 @@ class OllamaInferenceClient(OllamaModel):
     def __init__(
         self,
         model_id: str = "qwen2.5:7b",
-        base_url: str = "http://localhost:11434",
+        base_url: str = "http://localhost:6399",
         api_key: str = "not-needed",  # Ignored but kept for compatibility
         max_tokens: int = 512,
         temperature: float = 0.7,
