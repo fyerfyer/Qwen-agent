@@ -7,14 +7,23 @@ import requests
 import json
 import time
 from typing import List, Dict, Any, Optional, Union
+from dataclasses import dataclass
 import logging
 
 
+@dataclass
+class TokenUsage:
+    """Token usage information for smolagents compatibility"""
+    input_tokens: int
+    output_tokens: int
+
+
 class ChatMessage:
-    """Simple ChatMessage wrapper for smolagents compatibility"""
-    def __init__(self, content: str, role: str = "assistant"):
+    """ChatMessage wrapper for smolagents compatibility"""
+    def __init__(self, content: str, role: str = "assistant", token_usage: Optional[TokenUsage] = None):
         self.content = content
         self.role = role
+        self.token_usage = token_usage
     
     def __str__(self):
         return self.content
@@ -118,7 +127,7 @@ class OllamaModel:
             else:
                 # Handle string messages as user input
                 role = "user"
-                content = str(msg)
+                content = str(msg) if msg is not None else ""
             
             if role == "system":
                 formatted += f"System: {content}\n\n"
@@ -187,7 +196,11 @@ class OllamaModel:
             if response.status_code != 200:
                 raise Exception(f"Ollama API error: {response.status_code} - {response.text}")
             
-            result = response.json()
+            try:
+                result = response.json()
+            except json.JSONDecodeError as e:
+                raise Exception(f"Invalid JSON response from Ollama: {e}")
+            
             generated_text = result.get("response", "")
             
             # Count output tokens
@@ -197,19 +210,50 @@ class OllamaModel:
             duration = time.time() - start_time
             logger.debug(f"Generated {self.last_output_token_count} tokens in {duration:.2f}s")
             
-            return ChatMessage(content=generated_text.strip())
+            # Create token usage information
+            token_usage = TokenUsage(
+                input_tokens=self.last_input_token_count,
+                output_tokens=self.last_output_token_count
+            )
+            
+            return ChatMessage(
+                content=generated_text.strip(),
+                token_usage=token_usage
+            )
             
         except requests.exceptions.Timeout:
             logger.error(f"Request timeout after {self.timeout} seconds")
-            return ChatMessage(content="Error: Request timeout. The model may be processing a complex request.")
+            # Create minimal token usage for error cases
+            token_usage = TokenUsage(
+                input_tokens=self.last_input_token_count,
+                output_tokens=0
+            )
+            return ChatMessage(
+                content="Error: Request timeout. The model may be processing a complex request.",
+                token_usage=token_usage
+            )
         
         except requests.exceptions.RequestException as e:
             logger.error(f"Network error: {e}")
-            return ChatMessage(content=f"Error: Network error - {str(e)}")
+            token_usage = TokenUsage(
+                input_tokens=self.last_input_token_count,
+                output_tokens=0
+            )
+            return ChatMessage(
+                content=f"Error: Network error - {str(e)}",
+                token_usage=token_usage
+            )
         
         except Exception as e:
             logger.error(f"Ollama generation error: {e}")
-            return ChatMessage(content=f"Error: Generation failed - {str(e)}")
+            token_usage = TokenUsage(
+                input_tokens=self.last_input_token_count,
+                output_tokens=0
+            )
+            return ChatMessage(
+                content=f"Error: Generation failed - {str(e)}",
+                token_usage=token_usage
+            )
     
     def generate(
         self,

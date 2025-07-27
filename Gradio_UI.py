@@ -58,8 +58,10 @@ def pull_messages_from_step(
             args = first_tool_call.arguments
             if isinstance(args, dict):
                 content = str(args.get("answer", str(args)))
-            else:
+            elif args is not None:
                 content = str(args).strip()
+            else:
+                content = "No arguments provided"
 
             if used_code:
                 # Clean up the content by removing any end code tags
@@ -115,9 +117,12 @@ def pull_messages_from_step(
                 f" | Input-tokens:{step_log.input_token_count:,} | Output-tokens:{step_log.output_token_count:,}"
             )
             step_footnote += token_str
-        if hasattr(step_log, "duration"):
-            step_duration = f" | Duration: {round(float(step_log.duration), 2)}" if step_log.duration else None
-            step_footnote += step_duration
+        if hasattr(step_log, "duration") and step_log.duration is not None:
+            try:
+                step_duration = f" | Duration: {round(float(step_log.duration), 2)}"
+                step_footnote += step_duration
+            except (ValueError, TypeError):
+                step_footnote += " | Duration: N/A"
         step_footnote = f"""<span style="color: #bbbbc2; font-size: 12px;">{step_footnote}</span> """
         yield gr.ChatMessage(role="assistant", content=f"{step_footnote}")
         yield gr.ChatMessage(role="assistant", content="-----")
@@ -141,7 +146,8 @@ def stream_to_gradio(
 
     for step_log in agent.run(task, stream=True, reset=reset_agent_memory, additional_args=additional_args):
         # Track tokens if model provides them
-        if hasattr(agent.model, "last_input_token_count"):
+        if (hasattr(agent.model, "last_input_token_count") and 
+            hasattr(agent.model, "last_output_token_count")):
             total_input_tokens += agent.model.last_input_token_count
             total_output_tokens += agent.model.last_output_token_count
             if isinstance(step_log, ActionStep):

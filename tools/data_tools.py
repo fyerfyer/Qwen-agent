@@ -37,9 +37,13 @@ def load_data_from_file(file_path: str, file_format: str = "auto") -> str:
     global current_dataset
     
     try:
-        # Check if file exists
+        # Check if file exists and is accessible
         if not os.path.exists(file_path):
             return f"Error: File not found at path '{file_path}'"
+        if not os.path.isfile(file_path):
+            return f"Error: Path exists but is not a file: '{file_path}'"
+        if not os.access(file_path, os.R_OK):
+            return f"Error: File exists but is not readable: '{file_path}'"
         
         # Auto-detect format if needed
         if file_format == "auto":
