@@ -44,7 +44,7 @@ agent = CodeAgent(
     verbosity_level=1,
     grammar=None,
     planning_interval=None,
-    name="DataSphere Navigator",
+    name="DataSphere_Navigator",
     description="Expert data analyst and visualization specialist",
     prompt_templates=prompt_templates
 )
