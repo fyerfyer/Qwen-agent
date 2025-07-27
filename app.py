@@ -49,7 +49,8 @@ agent = CodeAgent(
     planning_interval=None,
     name="DataSphere_Navigator",
     description="Expert data analyst and visualization specialist",
-    prompt_templates=prompt_templates
+    prompt_templates=prompt_templates,
+    additional_authorized_imports=["pandas", "numpy", "matplotlib", "seaborn", "plotly"]
 )
 
 
