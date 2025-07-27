@@ -12,7 +12,7 @@ A sophisticated data analyst and visualization expert that transforms raw data i
 
 The DataSphere Navigator operates as a comprehensive data analysis pipeline agent that seamlessly integrates multiple analytical tools. The agent follows a systematic approach:
 
-1. **Data Ingestion**: Accepts various data formats (CSV, JSON, Excel) from URLs or file uploads
+1. **Data Ingestion**: Accepts various data formats (CSV, JSON, Excel, TXT) from URLs or direct file uploads
 2. **Data Exploration**: Performs initial data profiling and quality assessment
 3. **Statistical Analysis**: Conducts descriptive and inferential statistical analyses
 4. **Visualization Generation**: Creates appropriate charts and graphs based on data types and user requirements
@@ -21,6 +21,25 @@ The DataSphere Navigator operates as a comprehensive data analysis pipeline agen
 The tools work synergistically - data loading feeds into profiling, which informs visualization choices, while statistical analysis provides the foundation for generating meaningful insights.
 
 ## 3. Tool Manifest
+
+### `load_data_from_file`
+**Description:** Loads structured data from uploaded files supporting CSV, JSON, Excel, and TXT formats.
+
+**Python Function Signature:**
+```python
+def load_data_from_file(file_path: str, file_format: str = "auto") -> str:
+```
+
+**Docstring:**
+```python
+"""Loads structured data from an uploaded file.
+Args:
+    file_path: The local file path to the uploaded data file (CSV, JSON, Excel, or TXT)
+    file_format: The expected file format ('csv', 'json', 'excel', or 'auto' for auto-detection)
+Returns:
+    A string containing the loaded data summary and basic information about the dataset
+"""
+```
 
 ### `load_data_from_url`
 **Description:** Downloads and loads structured data from web URLs supporting CSV, JSON, and Excel formats.
@@ -214,9 +233,20 @@ system_prompt: |
 **User Prompt:** "I'm working with customer survey data. Can you help me understand data quality issues and suggest which variables are suitable for analysis?"
 
 **Expected Agent Actions:**
-1. Use `load_data_from_url` or request data upload for the survey dataset
+1. Use `load_data_from_file` if user uploads the survey dataset, or `load_data_from_url` if provided via URL
 2. Use `analyze_data_profile` to perform comprehensive data quality assessment
 3. Use `create_visualization` to create missing data heatmaps and distribution plots
 4. Use `calculate_statistics` to assess response patterns and detect potential biases
 5. Use `export_analysis_report` to generate a data quality report
 6. Use `final_answer` to provide specific recommendations for data cleaning and analysis approach
+
+### Example 4: File Upload Analysis
+**User Prompt:** "I've uploaded a CSV file with my company's sales data. Can you analyze the trends and identify key patterns?"
+
+**Expected Agent Actions:**
+1. Use `load_data_from_file` to load the uploaded CSV file and understand its structure
+2. Use `analyze_data_profile` to assess data quality and identify key variables
+3. Use `create_visualization` to generate time series plots and trend analysis charts
+4. Use `calculate_statistics` to identify significant patterns and correlations
+5. Use `create_visualization` to create additional charts highlighting key findings
+6. Use `final_answer` to present actionable insights and business recommendations

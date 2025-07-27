@@ -1,7 +1,9 @@
 from smolagents import CodeAgent, load_tool
 import yaml
+import os
 from tools.final_answer import FinalAnswerTool
 from tools.data_tools import (
+    load_data_from_file,
     load_data_from_url,
     analyze_data_profile, 
     create_visualization,
@@ -33,6 +35,7 @@ agent = CodeAgent(
     model=model,
     tools=[
         final_answer,
+        load_data_from_file,
         load_data_from_url,
         analyze_data_profile,
         create_visualization,
@@ -50,4 +53,10 @@ agent = CodeAgent(
 )
 
 
-GradioUI(agent).launch()
+# Create uploads folder if it doesn't exist
+uploads_folder = "uploads"
+if not os.path.exists(uploads_folder):
+    os.makedirs(uploads_folder)
+
+# Launch Gradio UI with file upload enabled
+GradioUI(agent, file_upload_folder=uploads_folder).launch()

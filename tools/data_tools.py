@@ -26,6 +26,72 @@ warnings.filterwarnings('ignore')
 current_dataset = None
 
 @tool
+def load_data_from_file(file_path: str, file_format: str = "auto") -> str:
+    """Loads structured data from an uploaded file.
+    Args:
+        file_path: The local file path to the uploaded data file (CSV, JSON, or Excel)
+        file_format: The expected file format ('csv', 'json', 'excel', or 'auto' for auto-detection)
+    Returns:
+        A string containing the loaded data summary and basic information about the dataset
+    """
+    global current_dataset
+    
+    try:
+        # Check if file exists
+        if not os.path.exists(file_path):
+            return f"Error: File not found at path '{file_path}'"
+        
+        # Auto-detect format if needed
+        if file_format == "auto":
+            if file_path.lower().endswith('.csv'):
+                file_format = 'csv'
+            elif file_path.lower().endswith('.json'):
+                file_format = 'json'
+            elif file_path.lower().endswith(('.xlsx', '.xls')):
+                file_format = 'excel'
+            elif file_path.lower().endswith('.txt'):
+                file_format = 'csv'  # Treat text files as CSV
+            else:
+                file_format = 'csv'  # Default fallback
+        
+        # Load data based on format
+        if file_format == 'csv':
+            current_dataset = pd.read_csv(file_path)
+        elif file_format == 'json':
+            with open(file_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            if isinstance(data, list):
+                current_dataset = pd.DataFrame(data)
+            else:
+                current_dataset = pd.json_normalize(data)
+        elif file_format == 'excel':
+            current_dataset = pd.read_excel(file_path)
+        else:
+            return f"Error: Unsupported file format '{file_format}'"
+        
+        # Generate summary
+        summary = f"""Data successfully loaded from uploaded file: {os.path.basename(file_path)}
+        
+Dataset Information:
+- Shape: {current_dataset.shape[0]} rows × {current_dataset.shape[1]} columns
+- Columns: {list(current_dataset.columns)}
+- Data types: {dict(current_dataset.dtypes)}
+- Memory usage: {current_dataset.memory_usage(deep=True).sum() / 1024:.2f} KB
+
+First 5 rows preview:
+{current_dataset.head().to_string()}
+
+Missing values per column:
+{current_dataset.isnull().sum().to_dict()}
+"""
+        
+        return summary
+        
+    except Exception as e:
+        return f"Error loading data from file '{file_path}': {str(e)}"
+
+
+@tool
 def load_data_from_url(url: str, file_format: str = "auto") -> str:
     """Downloads and loads structured data from a web URL.
     Args:

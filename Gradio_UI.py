@@ -204,13 +204,15 @@ class GradioUI:
         file,
         file_uploads_log,
         allowed_file_types=[
-            "application/pdf",
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "text/csv",
+            "application/json",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "application/vnd.ms-excel",
             "text/plain",
         ],
     ):
         """
-        Handle file uploads, default allowed types are .pdf, .docx, and .txt
+        Handle file uploads, default allowed types are .csv, .json, .xlsx, .xls, and .txt
         """
         import gradio as gr
 
