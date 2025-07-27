@@ -9,6 +9,16 @@ import time
 from typing import List, Dict, Any, Optional, Union
 import logging
 
+
+class ChatMessage:
+    """Simple ChatMessage wrapper for smolagents compatibility"""
+    def __init__(self, content: str, role: str = "assistant"):
+        self.content = content
+        self.role = role
+    
+    def __str__(self):
+        return self.content
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -92,12 +102,23 @@ class OllamaModel:
         except Exception as e:
             logger.error(f"Error pulling model: {e}")
     
-    def _format_messages(self, messages: List[Dict[str, str]]) -> str:
+    def _format_messages(self, messages: List[Union[Dict[str, str], Any]]) -> str:
         """Convert messages to a single prompt string"""
         formatted = ""
         for msg in messages:
-            role = msg.get("role", "user")
-            content = msg.get("content", "")
+            # Handle both dictionary messages and ChatMessage objects
+            if hasattr(msg, 'role') and hasattr(msg, 'content'):
+                # ChatMessage object
+                role = getattr(msg, 'role', 'user')
+                content = getattr(msg, 'content', '')
+            elif isinstance(msg, dict):
+                # Dictionary message
+                role = msg.get("role", "user")
+                content = msg.get("content", "")
+            else:
+                # Handle string messages as user input
+                role = "user"
+                content = str(msg)
             
             if role == "system":
                 formatted += f"System: {content}\n\n"
@@ -118,7 +139,7 @@ class OllamaModel:
         messages: List[Dict[str, str]],
         stop: Optional[List[str]] = None,
         **kwargs
-    ) -> str:
+    ) -> ChatMessage:
         """
         Main inference method compatible with smolagents
         
@@ -128,7 +149,7 @@ class OllamaModel:
             **kwargs: Additional parameters
             
         Returns:
-            Generated response string
+            ChatMessage object with generated response
         """
         try:
             # Format messages for Ollama
@@ -176,25 +197,25 @@ class OllamaModel:
             duration = time.time() - start_time
             logger.debug(f"Generated {self.last_output_token_count} tokens in {duration:.2f}s")
             
-            return generated_text.strip()
+            return ChatMessage(content=generated_text.strip())
             
         except requests.exceptions.Timeout:
             logger.error(f"Request timeout after {self.timeout} seconds")
-            return "Error: Request timeout. The model may be processing a complex request."
+            return ChatMessage(content="Error: Request timeout. The model may be processing a complex request.")
         
         except requests.exceptions.RequestException as e:
             logger.error(f"Network error: {e}")
-            return f"Error: Network error - {str(e)}"
+            return ChatMessage(content=f"Error: Network error - {str(e)}")
         
         except Exception as e:
             logger.error(f"Ollama generation error: {e}")
-            return f"Error: Generation failed - {str(e)}"
+            return ChatMessage(content=f"Error: Generation failed - {str(e)}")
     
     def generate(
         self,
         messages: List[Dict[str, str]],
         **kwargs
-    ) -> str:
+    ) -> ChatMessage:
         """Alternative interface method for compatibility"""
         return self.__call__(messages, **kwargs)
     
@@ -209,7 +230,8 @@ class OllamaModel:
         Returns:
             OpenAI-compatible response dictionary
         """
-        response_text = self.__call__(messages, **kwargs)
+        response_message = self.__call__(messages, **kwargs)
+        response_text = response_message.content
         
         return {
             "id": f"chatcmpl-{hash(response_text) % 10000000}",
@@ -338,7 +360,7 @@ if __name__ == "__main__":
         ]
         
         response = model(test_messages)
-        print(f"Response: {response}")
+        print(f"Response: {response.content}")
         
         print("✅ Ollama model test successful!")
         
