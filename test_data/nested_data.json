@@ -1,0 +1,84 @@
+{
+  "company": {
+    "name": "TechCorp Inc",
+    "founded": 2020,
+    "headquarters": {
+      "address": "123 Tech Street",
+      "city": "San Francisco",
+      "state": "CA",
+      "zipcode": "94105"
+    },
+    "departments": [
+      {
+        "name": "Engineering",
+        "employees": 45,
+        "budget": 2500000,
+        "projects": [
+          {
+            "name": "Project Alpha",
+            "status": "active",
+            "team_size": 8,
+            "metrics": {
+              "completion": 0.75,
+              "budget_used": 0.60,
+              "issues": 3
+            }
+          },
+          {
+            "name": "Project Beta",
+            "status": "planning",
+            "team_size": 5,
+            "metrics": {
+              "completion": 0.10,
+              "budget_used": 0.15,
+              "issues": 0
+            }
+          }
+        ]
+      },
+      {
+        "name": "Sales",
+        "employees": 25,
+        "budget": 1800000,
+        "projects": [
+          {
+            "name": "Q1 Campaign",
+            "status": "completed",
+            "team_size": 12,
+            "metrics": {
+              "completion": 1.0,
+              "budget_used": 0.95,
+              "issues": 1
+            }
+          }
+        ]
+      },
+      {
+        "name": "Marketing",
+        "employees": 15,
+        "budget": 1200000,
+        "projects": [
+          {
+            "name": "Brand Refresh",
+            "status": "active",
+            "team_size": 8,
+            "metrics": {
+              "completion": 0.40,
+              "budget_used": 0.35,
+              "issues": 2
+            }
+          }
+        ]
+      }
+    ],
+    "financial": {
+      "quarterly_revenue": [2800000, 3100000, 3400000, 3700000],
+      "quarterly_expenses": [2200000, 2400000, 2600000, 2900000],
+      "growth_targets": {
+        "revenue": 0.25,
+        "employees": 0.20,
+        "market_share": 0.15
+      }
+    }
+  }
+}

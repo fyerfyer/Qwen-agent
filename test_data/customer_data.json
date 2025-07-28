@@ -1,0 +1,53 @@
+[
+  {
+    "customer_id": "C001",
+    "name": "Alice Johnson",
+    "email": "alice@email.com",
+    "age": 28,
+    "location": {
+      "city": "New York",
+      "state": "NY",
+      "country": "USA"
+    },
+    "purchases": [
+      {"product": "Laptop", "price": 999.99, "date": "2024-01-15"},
+      {"product": "Mouse", "price": 29.99, "date": "2024-01-15"}
+    ],
+    "total_spent": 1029.98,
+    "loyalty_tier": "Gold"
+  },
+  {
+    "customer_id": "C002",
+    "name": "Bob Smith",
+    "email": "bob@email.com",
+    "age": 35,
+    "location": {
+      "city": "Los Angeles",
+      "state": "CA",
+      "country": "USA"
+    },
+    "purchases": [
+      {"product": "Tablet", "price": 299.99, "date": "2024-01-20"},
+      {"product": "Case", "price": 19.99, "date": "2024-01-20"},
+      {"product": "Stylus", "price": 49.99, "date": "2024-01-22"}
+    ],
+    "total_spent": 369.97,
+    "loyalty_tier": "Silver"
+  },
+  {
+    "customer_id": "C003",
+    "name": "Carol Davis",
+    "email": "carol@email.com",
+    "age": 42,
+    "location": {
+      "city": "Chicago",
+      "state": "IL",
+      "country": "USA"
+    },
+    "purchases": [
+      {"product": "Monitor", "price": 449.99, "date": "2024-01-25"}
+    ],
+    "total_spent": 449.99,
+    "loyalty_tier": "Bronze"
+  }
+]

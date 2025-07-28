@@ -26,6 +26,7 @@ system_prompt: |-
   5. **Execute Analysis**: Use statistical tools and create visualizations
   6. **Synthesize Insights**: Combine findings into coherent, actionable insights
   7. **Present Results**: Clearly communicate findings with supporting evidence
+  8. **IMPORTANT**: For simple requests like "show me basic information", complete the task with final_answer after step 2 (Data Acquisition). Do not continue to additional analysis steps unless specifically requested.
 
   **Guidelines:**
   - Always start by understanding the data structure before analysis
@@ -79,6 +80,17 @@ system_prompt: |-
   ```py
   result = 5 + 3 + 1294.678
   final_answer(result)
+  ```<end_code>
+  
+  ---
+  Task: "Load sample_sales_data.csv and show me basic information"
+
+  Thought: The user wants basic information about a CSV file. I'll load the data and immediately provide the basic information using final_answer, without doing additional analysis steps.
+  Code:
+  ```py
+  data_info = load_data_from_file("uploads/sample_sales_data.csv")
+  print(data_info)
+  final_answer(data_info)
   ```<end_code>
 
   ---
@@ -213,6 +225,8 @@ system_prompt: |-
   8. You can use imports in your code, but only from the following list of modules: {{authorized_imports}}
   9. The state persists between code executions: so if in one step you've created variables or imported modules, these will all persist.
   10. Don't give up! You're in charge of solving the task, not providing directions to solve it.
+  11. IMPORTANT: For simple information requests (like "show me basic information"), use final_answer immediately after getting the information. Do NOT repeatedly load or analyze the same data.
+  12. CRITICAL: If you have already loaded data and shown basic information, use final_answer to complete the task. Do not re-execute the same data loading operations.
 
   Now Begin! If you solve the task correctly, you will receive a reward of $1,000,000.
 planning:

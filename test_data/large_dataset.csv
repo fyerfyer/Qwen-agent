@@ -1,0 +1,26 @@
+Date,Product,Price,Quantity,Region,Category,Customer_ID,Sales_Rep
+2024-01-01,Widget A,19.99,100,North,Electronics,CUST001,REP01
+2024-01-01,Widget B,22.99,150,South,Electronics,CUST002,REP02
+2024-01-01,Widget C,15.99,200,East,Electronics,CUST003,REP03
+2024-01-01,Gadget X,45.50,75,West,Gadgets,CUST004,REP04
+2024-01-01,Gadget Y,35.99,125,North,Gadgets,CUST005,REP01
+2024-01-02,Widget A,19.99,110,South,Electronics,CUST006,REP02
+2024-01-02,Widget B,22.99,160,East,Electronics,CUST007,REP03
+2024-01-02,Widget C,15.99,210,West,Electronics,CUST008,REP04
+2024-01-02,Gadget X,45.50,85,North,Gadgets,CUST009,REP01
+2024-01-02,Gadget Y,35.99,135,South,Gadgets,CUST010,REP02
+2024-01-03,Widget A,19.99,95,East,Electronics,CUST011,REP03
+2024-01-03,Widget B,22.99,145,West,Electronics,CUST012,REP04
+2024-01-03,Widget C,15.99,195,North,Electronics,CUST013,REP01
+2024-01-03,Gadget X,45.50,70,South,Gadgets,CUST014,REP02
+2024-01-03,Gadget Y,35.99,120,East,Gadgets,CUST015,REP03
+2024-01-04,Widget A,19.99,105,West,Electronics,CUST016,REP04
+2024-01-04,Widget B,22.99,155,North,Electronics,CUST017,REP01
+2024-01-04,Widget C,15.99,205,South,Electronics,CUST018,REP02
+2024-01-04,Gadget X,45.50,80,East,Gadgets,CUST019,REP03
+2024-01-04,Gadget Y,35.99,130,West,Gadgets,CUST020,REP04
+2024-01-05,Widget A,19.99,115,North,Electronics,CUST021,REP01
+2024-01-05,Widget B,22.99,165,South,Electronics,CUST022,REP02
+2024-01-05,Widget C,15.99,215,East,Electronics,CUST023,REP03
+2024-01-05,Gadget X,45.50,90,West,Gadgets,CUST024,REP04
+2024-01-05,Gadget Y,35.99,140,North,Gadgets,CUST025,REP01

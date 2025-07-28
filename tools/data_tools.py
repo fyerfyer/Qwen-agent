@@ -36,6 +36,22 @@ def load_data_from_file(file_path: str, file_format: str = "auto") -> str:
     """
     global current_dataset
     
+    # Check if the same file is already loaded
+    if current_dataset is not None:
+        try:
+            # Simple check - if we have data and file exists, assume it's already loaded
+            if os.path.exists(file_path) and not current_dataset.empty:
+                return f"""Data from {os.path.basename(file_path)} is already loaded in memory.
+
+Current Dataset Information:
+- Shape: {current_dataset.shape[0]} rows × {current_dataset.shape[1]} columns
+- Columns: {list(current_dataset.columns)}
+- Data types: {dict(current_dataset.dtypes)}
+
+Use analyze_data_profile, create_visualization, or calculate_statistics tools for further analysis, or use final_answer if basic information is sufficient."""
+        except:
+            pass  # Continue with loading if check fails
+    
     try:
         # Check if file exists and is accessible
         if not os.path.exists(file_path):
